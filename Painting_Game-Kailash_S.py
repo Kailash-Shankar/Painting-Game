@@ -2,9 +2,7 @@ import pygame
 import sys
 import time
 
-from pygame.examples.midi import Keyboard
 
-from sudoku_generator import SudokuGenerator
 
 #Title Screen
 pygame.init()
@@ -20,9 +18,13 @@ Starttext2 = W.render("Start", 0, "yellow", "darkslategrey")
 
 #Sounds
 pygame.mixer.init()
-pop = pygame.mixer.Sound("pop.wav")
-long_pop = pygame.mixer.Sound("longpop.wav")
-C_Chord = pygame.mixer.Sound("c-chord-83638.mp3")
+try:
+    pop = pygame.mixer.Sound("pop.wav")
+    long_pop = pygame.mixer.Sound("longpop.wav")
+    C_Chord = pygame.mixer.Sound("c-chord-83638.mp3")
+    audio = True
+except:
+    audio = False
 
 flag = 0
 
@@ -34,7 +36,8 @@ screen.blit(Gametext, GT_rect)
 screen.blit(Starttext, ST_rect)
 screen.blit(Name, N_rect)
 pygame.display.update()
-pygame.mixer.Sound.play(C_Chord)
+if audio:
+    pygame.mixer.Sound.play(C_Chord)
 Title = True
 while Title:
     for event in pygame.event.get():
@@ -50,8 +53,8 @@ while Title:
                 pygame.display.update()
                 Title = False
 
-
-pygame.mixer.Sound.play(long_pop)
+if audio:
+    pygame.mixer.Sound.play(long_pop)
 time.sleep(0.15)
 
 #Main Interface
@@ -167,7 +170,8 @@ try:
                             pygame.draw.circle(screen, "white", (i, 50), 20, 5)
                             draw_highlight_sizes()
                             pygame.display.update()
-                            pygame.mixer.Sound.play(pop)
+                            if audio:
+                                pygame.mixer.Sound.play(pop)
                     #Checks for 'Erase' button press
                     if 500<x<600:
                         COLOR = screen_color
@@ -176,7 +180,8 @@ try:
                         draw_highlight_sizes()
                         pygame.display.update()
                         COLOR = screen_color
-                        pygame.mixer.Sound.play(pop)
+                        if audio:
+                            pygame.mixer.Sound.play(pop)
 
                 #Checks for 'Change Screen Color' button press
                 elif 415<x<585 and 530<y<570:
@@ -193,13 +198,15 @@ try:
                         flag = 0
                         COLOR = P2 if P2 != 7 else screen_color
                     setup()
-                    pygame.mixer.Sound.play(long_pop)
+                    if audio:
+                        pygame.mixer.Sound.play(long_pop)
 
 
                 #Checks for 'Clear' button press
                 elif 80<y<120 and 500<x<600:
                     setup()
-                    pygame.mixer.Sound.play(long_pop)
+                    if audio:
+                        pygame.mixer.Sound.play(long_pop)
 
                 #Checks for brush size mouse presses
                 elif 20<x<60:
@@ -211,7 +218,8 @@ try:
                             draw_brush_sizes()
                             draw_highlight_sizes()
                             pygame.display.update()
-                            pygame.mixer.Sound.play(pop)
+                            if audio:
+                                pygame.mixer.Sound.play(pop)
 
 
                 #Turns pen on
