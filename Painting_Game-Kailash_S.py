@@ -17,6 +17,13 @@ Gametext = W.render("Painting Game", 0, "midnightblue")
 Starttext = W.render("Start", 0, "white", "black")
 Starttext2 = W.render("Start", 0, "yellow", "darkslategrey")
 
+
+#Sounds
+pygame.mixer.init()
+pop = pygame.mixer.Sound("pop.wav")
+long_pop = pygame.mixer.Sound("longpop.wav")
+C_Chord = pygame.mixer.Sound("c-chord-83638.mp3")
+
 flag = 0
 
 GT_rect = Gametext.get_rect(center=(300, 200))
@@ -27,6 +34,7 @@ screen.blit(Gametext, GT_rect)
 screen.blit(Starttext, ST_rect)
 screen.blit(Name, N_rect)
 pygame.display.update()
+pygame.mixer.Sound.play(C_Chord)
 Title = True
 while Title:
     for event in pygame.event.get():
@@ -43,7 +51,7 @@ while Title:
                 Title = False
 
 
-
+pygame.mixer.Sound.play(long_pop)
 time.sleep(0.15)
 
 #Main Interface
@@ -76,12 +84,12 @@ Y = pygame.font.Font(None, 25)
 Eraser = X.render("Erase", 0, "black", "silver")
 Clear_Screen = X.render("Clear", 0, "black", "white")
 BG_Change = Y.render("Change Screen Color", 0, "black", "white")
-Brush_Size = Y.render("Brush Size", 0, "black", "white")
+Brush_Size = Y.render("Brush Size", 0, "black")
 
 E_rect = Eraser.get_rect(center=(550, 50))
 C_rect = Clear_Screen.get_rect(center=(550, 100))
 B_rect = BG_Change.get_rect(center=(500, 550))
-BS_rect = Brush_Size.get_rect(center=(50, 450))
+BS_rect = Brush_Size.get_rect(center=(50, 445))
 def draw_block_commands():
     screen.blit(Eraser, E_rect)
     screen.blit(Clear_Screen, C_rect)
@@ -150,7 +158,7 @@ try:
 
 
                 if 30<y<70:
-                    #Checks for mouse over color swatches
+                    #Checks for color swatches mouse presses
                     for i in val:
                         if i - 20 <= x <= i + 20:
                             COLOR = SWATCHES[val.index(i)]
@@ -159,6 +167,7 @@ try:
                             pygame.draw.circle(screen, "white", (i, 50), 20, 5)
                             draw_highlight_sizes()
                             pygame.display.update()
+                            pygame.mixer.Sound.play(pop)
                     #Checks for 'Erase' button press
                     if 500<x<600:
                         COLOR = screen_color
@@ -167,6 +176,7 @@ try:
                         draw_highlight_sizes()
                         pygame.display.update()
                         COLOR = screen_color
+                        pygame.mixer.Sound.play(pop)
 
                 #Checks for 'Change Screen Color' button press
                 elif 415<x<585 and 530<y<570:
@@ -183,12 +193,15 @@ try:
                         flag = 0
                         COLOR = P2 if P2 != 7 else screen_color
                     setup()
+                    pygame.mixer.Sound.play(long_pop)
 
 
                 #Checks for 'Clear' button press
                 elif 80<y<120 and 500<x<600:
                     setup()
+                    pygame.mixer.Sound.play(long_pop)
 
+                #Checks for brush size mouse presses
                 elif 20<x<60:
                     for i in range(len(depth)):
                         if depth[i]-20<y<depth[i]+20:
@@ -198,6 +211,8 @@ try:
                             draw_brush_sizes()
                             draw_highlight_sizes()
                             pygame.display.update()
+                            pygame.mixer.Sound.play(pop)
+
 
                 #Turns pen on
                 else:
